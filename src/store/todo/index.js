@@ -1,16 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
 
-const updateTodoListStorage = (updatedTodoList) => {
-    localStorage.setItem('todoItemList', JSON.stringify(updatedTodoList))
-}
-
 const handleCompleteTodo = (state, event, todoIndex) => {
     let todoToUpdate = {...state.todoList[todoIndex]}
     todoToUpdate.checked = event.target.checked
-    
-    const updatedTodoList = state.todoList.slice(0, todoIndex).concat(todoToUpdate).concat(state.todoList.slice(todoIndex + 1))
-    updateTodoListStorage(updatedTodoList)
 
+    const updatedTodoList = state.todoList.slice(0, todoIndex).concat(todoToUpdate).concat(state.todoList.slice(todoIndex + 1))
     return updatedTodoList
 }
 
@@ -21,15 +15,11 @@ const handleAddTodo = (state) => {
         key: uuidv4()
     }
 
-    localStorage.setItem('todoItemList', JSON.stringify([...state.todoList, todo]))
-
     return [...state.todoList, todo]
 }
 
 const handleDeleteTodo = (state, index) => {
     const updatedTodoList = state.todoList.slice(0, index).concat(state.todoList.slice(index + 1)) 
-
-    updateTodoListStorage(updatedTodoList)
 
     return updatedTodoList
 }

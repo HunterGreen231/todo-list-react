@@ -1,16 +1,25 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import TodoList from './components/TodoList'
 import useStore from '~/store'
 
 function TodoMain() {
     const { todoList, addTodo, setTodoList, todoInput, changeTodoInput } = useStore();
+    const isInitialMount = useRef(true)
 
     useEffect(() => {
         const todoItemListStorage = localStorage.getItem('todoItemList')
         if (todoItemListStorage != null) {
             setTodoList(JSON.parse(todoItemListStorage))
         }
-    }, [])
+    }, [setTodoList])
+
+    useEffect(() => {
+        if (isInitialMount.current) {
+            isInitialMount.current = false
+        } else {
+            localStorage.setItem('todoItemList', JSON.stringify(todoList))
+        }
+    }, [todoList])
 
     return (
         <>
