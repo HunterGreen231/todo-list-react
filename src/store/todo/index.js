@@ -11,8 +11,10 @@ const handleAddTodo = (state) => {
     let todo = {
         text: state.todoInput,
         checked: false,
-        key: uuidv4(),
+        key: uuidv4()
     }
+
+    localStorage.setItem('todoItemList', JSON.stringify([...state.todoList, todo]))
 
     return [...state.todoList, todo]
 }
@@ -21,9 +23,16 @@ const handleDeleteTodo = (state, index) => {
     return state.todoList.slice(0, index).concat(state.todoList.slice(index + 1)) 
 }
 
+const handleSetTodoList = (todoListStorage) => {
+    return todoListStorage
+}
+
 const todoSlice = (set, get) => ({
     todoList: [],
     todoInput: 'Enter todo item',
+    setTodoList: (todoListStorage) => set((state) => ({
+        todoList: handleSetTodoList(todoListStorage)
+    })),
     addTodo: () => set((state) => ({ 
         todoList: handleAddTodo(state)
     })),

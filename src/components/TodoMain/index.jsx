@@ -1,8 +1,16 @@
+import { useEffect } from 'react';
 import TodoList from './components/TodoList'
 import useStore from '~/store'
 
 function TodoMain() {
-    const { todoList, addTodo, todoInput, changeTodoInput } = useStore();
+    const { todoList, addTodo, setTodoList, todoInput, changeTodoInput } = useStore();
+
+    useEffect(() => {
+        const todoItemListStorage = localStorage.getItem('todoItemList')
+        if (todoItemListStorage != null) {
+            setTodoList(JSON.parse(todoItemListStorage))
+        }
+    }, [])
 
     return (
         <>
